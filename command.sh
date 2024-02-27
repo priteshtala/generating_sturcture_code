@@ -44,38 +44,47 @@ read DISPLAY_NAME
 
 dart run ../rename_app/main.dart all="$DISPLAY_NAME"
 
-echo "please enter git repository:"
-read  -r repository
-echo
+#echo "please enter git repository:"
+#read  -r repository
+#echo
+#
+#git init
+#git add .
+#echo "Please enter the commit message:"
+#read -r commit_message
+#git commit -m "$commit_message"
+#git remote add origin "$repository"
+#git push -u origin master
 
-git init
-git add .
-echo "Please enter the commit message:"
-read -r commit_message
-git commit -m "$commit_message"
-git remote add origin "$repository"
-git push -u origin master
+#echo "Please Enter store password:"
+#read -r storePassword
+#echo
+#
+#echo "Please Enter key password:"
+#read -r  key_Password
+#echo
+#
+## Validation or other checks can be added here if needed
+#
+#keytool -genkey -v -keystore android/app/upload-keystore.jks -keyalg RSA \
+#  -keysize 2048 -validity 10000 -alias upload -storepass "$storePassword" -keypass "$key_Password"
+#
+## Update key.properties file with dynamic password
+#echo "storePassword=$storePassword" >> android/key.properties
+#echo "keyPassword=$key_Password" >> android/key.properties
+#echo "keyAlias=upload" >> android/key.properties
+#echo "storeFile=../app/upload-keystore.jks" >> android/key.properties
 
-echo "Please Enter store password:"
-read -r storePassword
-echo
+dart run /Volumes/Data/flutter/generating_structure_code/app_icon_gen/lib/main.dart
 
-echo "Please Enter key password:"
-read -r  key_Password
-echo
+echo "Please enter the path to the downloaded app logo (absolute path):"
+read DOWNLOADED_LOGO_PATH
 
-# Validation or other checks can be added here if needed
+# Set the path where you want to store the image in your Flutter project
+PROJECT_LOGO_PATH="assets/images/app_logo.png"
 
-keytool -genkey -v -keystore android/app/upload-keystore.jks -keyalg RSA \
-  -keysize 2048 -validity 10000 -alias upload -storepass "$storePassword" -keypass "$key_Password"
-
-# Update key.properties file with dynamic password
-echo "storePassword=$storePassword" >> android/key.properties
-echo "keyPassword=$key_Password" >> android/key.properties
-echo "keyAlias=upload" >> android/key.properties
-echo "storeFile=../app/upload-keystore.jks" >> android/key.properties
-
-
+# Copy the downloaded image to your Flutter project
+cp "$DOWNLOADED_LOGO_PATH" "$PROJECT_LOGO_PATH"
 echo "-------------------------------------------------"
 echo "ALL DONE!!!"
 echo "-------------------------------------------------"
