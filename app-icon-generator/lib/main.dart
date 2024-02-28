@@ -3,8 +3,7 @@ library app_icon_generator;
 import 'dart:io';
 import 'src/helper_function.dart';
 
-const message =
-    "******************* Note: You have to add your app icon path inside the required_files folder *******************";
+const message = "******************* Note: You have to add your app icon path inside the required_files folder *******************";
 
 void main(List<String> args) {
   _init(args[0]);
