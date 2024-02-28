@@ -59,7 +59,7 @@ dart run $STRUCTURE_ORG_DIR/rename_app/main.dart all="$DISPLAY_NAME"
 #echo "keyAlias=upload" >> android/key.properties
 #echo "storeFile=../app/upload-keystore.jks" >> android/key.properties
 
-dart run $STRUCTURE_ORG_DIR/app-icon-generator/lib/main.dart
+dart run $STRUCTURE_ORG_DIR/app-icon-generator/lib/main.dart $STRUCTURE_ORG_DIR
 
 cp -r $CUSTOM_PROJECT_DIR/"$PROJECT_NAME"/android/app/src/main/res/ $STRUCTURE_ORG_DIR/app-icon-generator/android/
 # Remove the original Android resources
