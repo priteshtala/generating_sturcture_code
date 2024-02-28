@@ -10,7 +10,7 @@ List<Point> calculateCircumference(Image image, int x0, int y0, int radius) {
   if (radius < 0 ||
       x0 - radius >= image.width ||
       y0 + radius < 0 ||
-      y0 - radius >= image.height) {
+      y0 - radius >= image.height       ) {
     return [];
   }
 
