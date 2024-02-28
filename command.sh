@@ -45,7 +45,7 @@ read DISPLAY_NAME
 dart run ../rename_app/main.dart all="$DISPLAY_NAME"
 
 #echo "please enter git repository:"
-#read  -r repository
+#read  -r z
 #echo
 #
 #git init
@@ -75,18 +75,16 @@ dart run ../rename_app/main.dart all="$DISPLAY_NAME"
 #echo "keyAlias=upload" >> android/key.properties
 #echo "storeFile=../app/upload-keystore.jks" >> android/key.properties
 
-dart run /Volumes/Data/flutter/generating_structure_code/app_icon_gen/lib/main.dart
 
-echo "Please enter the path to the downloaded app logo (absolute path):"
-read DOWNLOADED_LOGO_PATH
+dart run ../app-icon-generator/lib/main.dart
 
-# Set the path where you want to store the image in your Flutter project
-PROJECT_LOGO_PATH="assets/images/app_logo.png"
+cp -r android/app/src/main/res/ ../app-icon-generator/android/
+# Remove the original Android resources
+rm -r ../app-icon-generator/android/
+cp -r ios/Runner/ ../app-icon-generator/ios/
+# Remove the original Ios resources
+rm -r ../app-icon-generator/ios/
 
-# Copy the downloaded image to your Flutter project
-cp "$DOWNLOADED_LOGO_PATH" "$PROJECT_LOGO_PATH"
 echo "-------------------------------------------------"
 echo "ALL DONE!!!"
 echo "-------------------------------------------------"
-
-
