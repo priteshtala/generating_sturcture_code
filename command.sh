@@ -3,11 +3,9 @@
 # Get the current working directory
 current_directory=$(pwd)
 echo "Current working directory: $current_directory"
+
 #New project path
 CUSTOM_PROJECT_DIR="/Volumes/Data/flutter"
-
-##Generate structure [Common] project path
-#STRUCTURE_ORG_DIR="/Volumes/Data/ELaunchWork/Project/generating_sturcture_code"
 
 #Structre Project path
 ORG_DIR="$current_directory/cubit_demo_project/Bit-Merge-Mobile-master"
@@ -18,18 +16,21 @@ read PROJECT_NAME
 echo "please enter domain name :"
 read domain
 
-##For creating and importing project.
+#**************************** COMMAND TO CREATE-PROJECT ***************************************
+
 flutter create --org com.$domain "$CUSTOM_PROJECT_DIR/$PROJECT_NAME"
 echo "-------------------------------------------------"
 echo "CREATED PROJECT $CUSTOM_PROJECT_DIR/$PROJECT_NAME"
 echo "-------------------------------------------------"
 
-##Copying required directories.
+#**************************** COPY-FILES-TO-bit-merge-project ***************************************
+
 cp -r "$ORG_DIR/lib" "$CUSTOM_PROJECT_DIR/$PROJECT_NAME"
 cp -r "$ORG_DIR/assets" "$CUSTOM_PROJECT_DIR/$PROJECT_NAME"
 cp -r "$ORG_DIR/pubspec.yaml" "$CUSTOM_PROJECT_DIR/$PROJECT_NAME"
 
-##Changing required directories.
+#**************************** changes directory to project ***************************************
+
 find "$CUSTOM_PROJECT_DIR/$PROJECT_NAME/lib" -type f -exec sed -i "" "s/bit_merge_mobile/$PROJECT_NAME/g" {} +
 sed -i "" "s/bit_merge_mobile/$PROJECT_NAME/g" "$CUSTOM_PROJECT_DIR/$PROJECT_NAME/pubspec.yaml"
 sed -i "" "s/<desc>/A new flutter project./g" "$CUSTOM_PROJECT_DIR/$PROJECT_NAME/pubspec.yaml"
@@ -42,8 +43,13 @@ flutter pub upgrade
 echo "Please enter your App name :"
 read -r DISPLAY_NAME
 
-##For changing name of app
+#**************************** APP-RENAME ***************************************
 dart run "$current_directory"/rename_app/main.dart all="$DISPLAY_NAME"
+
+#**************************** Project add to GIT ***************************************
+
+echo "Please enter git repository:"
+read -r repository
 
 git init
 git add .
@@ -52,6 +58,8 @@ read -r commit_message
 git commit -m "$commit_message"
 git remote add origin "$repository"
 git push -u origin master
+
+#**************************** key.properties-generated ***************************************
 
 echo "Please Enter store password (at least 6 characters):"
 while true; do
@@ -62,7 +70,6 @@ while true; do
     echo "Password must be at least 6 characters. Please try again."
   fi
 done
-dart run "${current_directory}"/app-icon-generator/lib/main.dart "$current_directory"
 
 echo "Please Enter key password (at least 6 characters):"
 while true; do
@@ -84,10 +91,10 @@ echo "keyPassword=$key_Password" >> android/key.properties
 echo "keyAlias=upload" >> android/key.properties
 echo "storeFile=../app/upload-keystore.jks" >> android/key.properties
 
+#**************************** APP-ICON-GENERATED ***************************************
+dart run $current_directory/app-icon-generator/lib/main.dart $current_directory
 
-dart run $STRUCTURE_ORG_DIR/app-icon-generator/lib/main.dart $STRUCTURE_ORG_DIR
-
-cp -r $CUSTOM_PROJECT_DIR/"$PROJECT_NAME"/android/app/src/main/res/ $STRUCTURE_ORG_DIR/app-icon-generator/android/
+cp -r $CUSTOM_PROJECT_DIR/"$PROJECT_NAME"/android/app/src/main/res/ $current_directory/app-icon-generator/android/
 cp -r $CUSTOM_PROJECT_DIR/"$PROJECT_NAME"/android/app/src/main/res/ "${current_directory}"/app-icon-generator/android/
 # Remove the original Android resources
 rm -r "${current_directory}"/app-icon-generator/android/
