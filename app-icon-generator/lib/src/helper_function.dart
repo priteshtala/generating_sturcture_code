@@ -13,7 +13,7 @@ image.Image? getImageDimension({required String imagePath}) {
   return null;
 }
 
-void resizeImage({required image.Image decodedImage}) async {
+void resizeImage({required image.Image decodedImage,required String path}) async {
   final resizedAndroidImageList = <File>[];
   final resizedIosImageList = <File>[];
 
@@ -34,7 +34,7 @@ void resizeImage({required image.Image decodedImage}) async {
     resizedIosImageList.add(file);
   }
 
-  final jsonFilePath = "/Volumes/Data/ELaunchWork/Project/generating_sturcture_code/app-icon-generator/lib/src/Contents.json";
+  final jsonFilePath = "$path/app-icon-generator/lib/src/Contents.json";
   String jsonString = File(jsonFilePath).readAsStringSync();
   File("${iosDirectory.path}/Contents.json").writeAsString(jsonString);
 }

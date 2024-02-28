@@ -21,7 +21,7 @@ void _init(String path) {
   final decodedImage = getImageDimension(imagePath: "$path/required_files/app_icon.jpg");
   if (decodedImage == null) return;
   if (decodedImage.height == 1024 && decodedImage.width == 1024) {
-    resizeImage(decodedImage: decodedImage);
+    resizeImage(decodedImage: decodedImage,path: path);
   } else {
     print("Error => image size should be 1024 x 1024 but it is ${decodedImage.height} x ${decodedImage.width}");
   }
