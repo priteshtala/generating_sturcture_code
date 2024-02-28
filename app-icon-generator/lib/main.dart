@@ -1,5 +1,7 @@
+library app_icon_generator;
+
 import 'dart:io';
-import 'package:app_icon_generator/src/helper_function.dart';
+import 'src/helper_function.dart';
 
 const message =
     "******************* Note: You have to add your app icon path inside the required_files folder otherwise, it will take the default icon. *******************";
