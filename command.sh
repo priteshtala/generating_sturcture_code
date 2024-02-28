@@ -11,8 +11,11 @@ ORG_DIR="$STRUCTURE_ORG_DIR/cubit_demo_project/Bit-Merge-Mobile-master"
 echo "Please enter your project name :"
 read PROJECT_NAME
 
+echo "please enter domain name :"
+read domain
+
 ##For creating and importing project.
-flutter create --org com.gtp "$CUSTOM_PROJECT_DIR/$PROJECT_NAME"
+flutter create --org com.$domain "$CUSTOM_PROJECT_DIR/$PROJECT_NAME"
 echo "-------------------------------------------------"
 echo "CREATED PROJECT $CUSTOM_PROJECT_DIR/$PROJECT_NAME"
 echo "-------------------------------------------------"
@@ -49,11 +52,25 @@ git commit -m "$commit_message"
 git remote add origin "$repository"
 git push -u origin master
 
-echo "Please Enter store password :"
-read -r storePassword
+echo "Please Enter store password (at least 6 characters):"
+while true; do
+  read -r storePassword
+  if [ ${#storePassword} -ge 6 ]; then
+    break
+  else
+    echo "Password must be at least 6 characters. Please try again."
+  fi
+done
 
-echo "Please Enter key password :"
-read -r  key_Password
+echo "Please Enter key password (at least 6 characters):"
+while true; do
+  read -r key_Password
+  if [ ${#key_Password} -ge 6 ]; then
+    break
+  else
+    echo "Password must be at least 6 characters. Please try again."
+  fi
+done
 
 # Validation or other checks can be added here if needed
 keytool -genkey -v -keystore android/app/upload-keystore.jks -keyalg RSA \
@@ -64,6 +81,7 @@ echo "storePassword=$storePassword" >> android/key.properties
 echo "keyPassword=$key_Password" >> android/key.properties
 echo "keyAlias=upload" >> android/key.properties
 echo "storeFile=../app/upload-keystore.jks" >> android/key.properties
+
 
 dart run $STRUCTURE_ORG_DIR/app-icon-generator/lib/main.dart $STRUCTURE_ORG_DIR
 
