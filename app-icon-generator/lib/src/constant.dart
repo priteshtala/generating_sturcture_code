@@ -1,5 +1,5 @@
-import 'package:app_icon_generator/src/model/android.dart';
-import 'package:app_icon_generator/src/model/ios.dart';
+import 'model/android.dart';
+import 'model/ios.dart';
 
 const androidFolderPath = "android/app/src/main/res";
 const iosFolderPath = "ios/Runner/Assets.xcassets/AppIcon.appiconset";

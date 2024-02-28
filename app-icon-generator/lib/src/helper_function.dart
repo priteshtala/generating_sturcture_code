@@ -1,6 +1,6 @@
 import 'dart:io';
-import 'package:app_icon_generator/src/constant.dart';
-import 'package:app_icon_generator/src/image/image.dart' as image;
+import 'package:image/image.dart' as image;
+import 'constant.dart';
 
 image.Image? getImageDimension({required String imagePath}) {
   try {
