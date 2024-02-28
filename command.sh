@@ -1,12 +1,16 @@
+#!/bin/bash
 
+# Get the current working directory
+current_directory=$(pwd)
+echo "Current working directory: $current_directory"
 #New project path
 CUSTOM_PROJECT_DIR="/Volumes/Data/flutter"
 
-#Generate structure [Common] project path
-STRUCTURE_ORG_DIR="/Volumes/Data/flutter/generating_sturcture_code"
+##Generate structure [Common] project path
+#STRUCTURE_ORG_DIR="/Volumes/Data/ELaunchWork/Project/generating_sturcture_code"
 
 #Structre Project path
-ORG_DIR="$STRUCTURE_ORG_DIR/cubit_demo_project/Bit-Merge-Mobile-master"
+ORG_DIR="$current_directory/cubit_demo_project/Bit-Merge-Mobile-master"
 
 echo "Please enter your project name :"
 read PROJECT_NAME
@@ -39,10 +43,7 @@ echo "Please enter your App name :"
 read -r DISPLAY_NAME
 
 ##For changing name of app
-dart run $STRUCTURE_ORG_DIR/rename_app/main.dart all="$DISPLAY_NAME"
-
-echo "please enter git repository :"
-read  -r repository
+dart run "$current_directory"/rename_app/main.dart all="$DISPLAY_NAME"
 
 git init
 git add .
@@ -61,6 +62,7 @@ while true; do
     echo "Password must be at least 6 characters. Please try again."
   fi
 done
+dart run "${current_directory}"/app-icon-generator/lib/main.dart "$current_directory"
 
 echo "Please Enter key password (at least 6 characters):"
 while true; do
@@ -86,11 +88,12 @@ echo "storeFile=../app/upload-keystore.jks" >> android/key.properties
 dart run $STRUCTURE_ORG_DIR/app-icon-generator/lib/main.dart $STRUCTURE_ORG_DIR
 
 cp -r $CUSTOM_PROJECT_DIR/"$PROJECT_NAME"/android/app/src/main/res/ $STRUCTURE_ORG_DIR/app-icon-generator/android/
+cp -r $CUSTOM_PROJECT_DIR/"$PROJECT_NAME"/android/app/src/main/res/ "${current_directory}"/app-icon-generator/android/
 # Remove the original Android resources
-rm -r $STRUCTURE_ORG_DIR/app-icon-generator/android/
-cp -r $CUSTOM_PROJECT_DIR/"$PROJECT_NAME"/ios/Runner/ $STRUCTURE_ORG_DIR/app-icon-generator/ios/
+rm -r "${current_directory}"/app-icon-generator/android/
+cp -r $CUSTOM_PROJECT_DIR/"$PROJECT_NAME"/ios/Runner/ "${current_directory}"/app-icon-generator/ios/
 # Remove the original Ios resources
-rm -r $STRUCTURE_ORG_DIR/app-icon-generator/ios/
+rm -r "$current_directory"/app-icon-generator/ios/
 
 echo "-------------------------------------------------"
 echo "ALL DONE!!!"
