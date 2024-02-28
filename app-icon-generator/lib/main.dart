@@ -12,7 +12,7 @@ void main() {
     main();
     return;
   }
-  final decodedImage = getImageDimension(imagePath: "/Volumes/Data/ELaunchWork/Project/generating_sturcture_code/required_files/500x500.jpg");
+  final decodedImage = getImageDimension(imagePath: "/Volumes/Data/ELaunchWork/Project/generating_sturcture_code/required_files/app_icon.jpg");
   if (decodedImage == null) return;
   if (decodedImage.height == 1024 && decodedImage.width == 1024) {
     resizeImage(decodedImage: decodedImage);
