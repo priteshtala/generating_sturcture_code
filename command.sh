@@ -13,10 +13,10 @@ CUSTOM_PROJECT_DIR="/Volumes/Data/flutter"
 ORG_DIR="$current_directory/cubit_demo_project/Bit-Merge-Mobile-master"
 
 echo "Please enter your project name :"
-read PROJECT_NAME
+read -r PROJECT_NAME
 
 echo "please enter domain name :"
-read domain
+read -r domain
 
 ##For creating and importing project.
 flutter create --org com.$domain "$CUSTOM_PROJECT_DIR/$PROJECT_NAME"
@@ -62,6 +62,8 @@ while true; do
     echo "Password must be at least 6 characters. Please try again."
   fi
 done
+
+
 dart run "${current_directory}"/app-icon-generator/lib/main.dart "$current_directory"
 
 echo "Please Enter key password (at least 6 characters):"
@@ -85,9 +87,7 @@ echo "keyAlias=upload" >> android/key.properties
 echo "storeFile=../app/upload-keystore.jks" >> android/key.properties
 
 
-dart run $STRUCTURE_ORG_DIR/app-icon-generator/lib/main.dart $STRUCTURE_ORG_DIR
-
-cp -r $CUSTOM_PROJECT_DIR/"$PROJECT_NAME"/android/app/src/main/res/ $STRUCTURE_ORG_DIR/app-icon-generator/android/
+dart run "$current_directory"/app-icon-generator/lib/main.dart "${current_directory}"
 cp -r $CUSTOM_PROJECT_DIR/"$PROJECT_NAME"/android/app/src/main/res/ "${current_directory}"/app-icon-generator/android/
 # Remove the original Android resources
 rm -r "${current_directory}"/app-icon-generator/android/
