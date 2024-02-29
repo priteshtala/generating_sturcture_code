@@ -88,15 +88,15 @@ keytool -genkey -v -keystore android/app/upload-keystore.jks -keyalg RSA \
   -keysize 2048 -validity 10000 -alias upload -storepass "$storePassword" -keypass "$key_Password"
 
 # Update key.properties file with dynamic password
-echo "storePassword=$storePassword" >> android/key.properties
-echo "keyPassword=$key_Password" >> android/key.properties
-echo "keyAlias=upload" >> android/key.properties
-echo "storeFile=../app/upload-keystore.jks" >> android/key.properties
+echo "storePassword=$storePassword" >>android/key.properties
+echo "keyPassword=$key_Password" >>android/key.properties
+echo "keyAlias=upload" >>android/key.properties
+echo "storeFile=../app/upload-keystore.jks" >>android/key.properties
 
 #**************************** APP-ICON-GENERATED ***************************************
-dart run $current_directory/app-icon-generator/lib/main.dart $current_directory
+dart run "$current_directory"/app-icon-generator/lib/main.dart "$current_directory"
 
-cp -r $CUSTOM_PROJECT_DIR/"$PROJECT_NAME"/android/app/src/main/res/ $current_directory/app-icon-generator/android/
+cp -r $CUSTOM_PROJECT_DIR/"$PROJECT_NAME"/android/app/src/main/res/ "$current_directory"/app-icon-generator/android/
 cp -r $CUSTOM_PROJECT_DIR/"$PROJECT_NAME"/android/app/src/main/res/ "${current_directory}"/app-icon-generator/android/
 # Remove the original Android resources
 rm -r "${current_directory}"/app-icon-generator/android/

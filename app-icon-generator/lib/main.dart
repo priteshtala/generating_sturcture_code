@@ -3,14 +3,12 @@ library app_icon_generator;
 import 'dart:io';
 import 'src/helper_function.dart';
 
-const message = "******************* Note: You have to add your app icon path inside the required_files folder *******************";
-
 void main(List<String> args) {
   _init(args[0]);
 }
 
 void _init(String path) {
-  print(message);
+  print("******************* Note: You have to add your app icon path inside the required_files folder *******************");
   stdout.write("Enter y to continue :: ");
   final userInput = stdin.readLineSync();
   if (userInput == null || userInput.isEmpty || userInput.trim() != 'y') {
