@@ -1,7 +1,24 @@
 #!/bin/bash
 
+validate_project_name() {
+  local project_name=$1
+  # Check for spaces, uppercase letters, special characters, and numbers in the project name
+  if [[ $project_name =~ [[:space:]] || $project_name =~ [[:upper:]] || $project_name =~ [^a-zA-Z_] || $project_name =~ [[:digit:]] ]]; then
+    echo "Invalid project name. Please use only lowercase letters without spaces, uppercase letters, special characters, or numbers."
+    return 1
+  else
+    return 0
+  fi
+}
+
 echo "Please enter your project name :"
 read -r PROJECT_NAME
+
+# Validate the project name
+while ! validate_project_name "$PROJECT_NAME"; do
+  echo "Please enter a valid project name :"
+  read -r PROJECT_NAME
+done
 
 echo "please enter domain name :"
 read -r domain
