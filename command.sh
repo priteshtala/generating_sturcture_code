@@ -1,8 +1,9 @@
 #!/bin/bash
 
+#**************************** Create new project ***************************************
+
 validate_project_name() {
   local project_name=$1
-  # Check for spaces, uppercase letters, special characters, and numbers in the project name
   if [[ $project_name =~ [[:space:]] || $project_name =~ [[:upper:]] || $project_name =~ [^a-zA-Z_] || $project_name =~ [[:digit:]] ]]; then
     echo "Invalid project name. Please use only lowercase letters without spaces, uppercase letters, special characters, or numbers."
     return 1
@@ -20,24 +21,40 @@ while ! validate_project_name "$PROJECT_NAME"; do
   read -r PROJECT_NAME
 done
 
-echo "please enter domain name :"
+#**************************** Enter Domain name ***************************************
+echo "please enter package name :"
 read -r domain
+
 
 # Get the current working directory
 current_directory=$(pwd)
-echo "Current working directory: $current_directory"
-#New project path
-# shellcheck disable=SC2164
-cd .. && mkdir generated_project && cd generated_project
-CUSTOM_PROJECT_DIR=$(pwd)
-echo "CUSTOM_PROJECT_DIR directory: $CUSTOM_PROJECT_DIR"
+#echo "Current working directory: $current_directory"
+cd ..
+CUSTOM_PROJECT_DIR=$(pwd)/generated_project
+echo "Default project directory path: $CUSTOM_PROJECT_DIR"
 
-#Structre Project path
+# Ask the user if they want to enter a custom path
+echo "Do you want to change project directory path? (yes/no):"
+read -r custom_path_choice
+
+# New project path
+if [ "$custom_path_choice" = "yes" ]; then
+  echo "Please enter your project store path:"
+  read -r project_path
+  CUSTOM_PROJECT_DIR="$project_path"
+else
+#  cd ..
+#  CUSTOM_PROJECT_DIR=$(pwd)/generated_project
+  mkdir -p "$CUSTOM_PROJECT_DIR"
+fi
+
+#echo "CUSTOM_PROJECT_DIR directory: $CUSTOM_PROJECT_DIR"
+#Structre Project Path
 ORG_DIR="$current_directory/cubit_demo_project/Bit-Merge-Mobile-master"
 
 #**************************** COMMAND TO CREATE-PROJECT ***************************************
 
-flutter create --org com.$domain "$CUSTOM_PROJECT_DIR/$PROJECT_NAME"
+flutter create --org $domain "$CUSTOM_PROJECT_DIR/$PROJECT_NAME"
 echo "-------------------------------------------------"
 echo "CREATED PROJECT $CUSTOM_PROJECT_DIR/$PROJECT_NAME"
 echo "-------------------------------------------------"
