@@ -1,19 +1,22 @@
 #!/bin/bash
 
-# Get the current working directory
-current_directory=$(pwd)
-echo "Current working directory: $current_directory"
-#New project path
-CUSTOM_PROJECT_DIR="/Volumes/Data/flutter"
-
-#Structre Project path
-ORG_DIR="$current_directory/cubit_demo_project/Bit-Merge-Mobile-master"
-
 echo "Please enter your project name :"
 read -r PROJECT_NAME
 
 echo "please enter domain name :"
 read -r domain
+
+# Get the current working directory
+current_directory=$(pwd)
+echo "Current working directory: $current_directory"
+#New project path
+# shellcheck disable=SC2164
+cd .. && mkdir generated_project && cd generated_project
+CUSTOM_PROJECT_DIR=$(pwd)
+echo "CUSTOM_PROJECT_DIR directory: $CUSTOM_PROJECT_DIR"
+
+#Structre Project path
+ORG_DIR="$current_directory/cubit_demo_project/Bit-Merge-Mobile-master"
 
 #**************************** COMMAND TO CREATE-PROJECT ***************************************
 

@@ -1,3 +1,10 @@
 # Default ignored files
 /shelf/
 /workspace.xml
+/libraries/Dart_Packages.xml
+/libraries/Dart_SDK.xml
+/libraries/Flutter_Plugins.xml
+/generating_sturcture_code.iml
+/misc.xml
+/modules.xml
+/vcs.xml
