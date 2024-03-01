@@ -112,9 +112,10 @@ dart run "$current_directory"/rename_app/main.dart all="$DISPLAY_NAME"
 
 #**************************** APP-ICON-GENERATED ***************************************
 
+
 generate_icons() {
   echo "******************* Note: At this stage, you have to add your app icon path inside the required_files folder with filename app_icon; otherwise, it will take the default one *******************"
-  echo "Do you want to proceed? (y/n):"
+  echo "Do you want to proceed? (y):"
   read -r user_input
 
   # Validate the user input
