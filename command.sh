@@ -70,16 +70,38 @@ cp -r "$ORG_DIR/pubspec.yaml" "$CUSTOM_PROJECT_DIR/$PROJECT_NAME"
 find "$CUSTOM_PROJECT_DIR/$PROJECT_NAME/lib" -type f -exec sed -i "" "s/bit_merge_mobile/$PROJECT_NAME/g" {} +
 sed -i "" "s/bit_merge_mobile/$PROJECT_NAME/g" "$CUSTOM_PROJECT_DIR/$PROJECT_NAME/pubspec.yaml"
 sed -i "" "s/<desc>/A new flutter project./g" "$CUSTOM_PROJECT_DIR/$PROJECT_NAME/pubspec.yaml"
+#/Volumes/Data/flutter/generating_sturcture_code/cubit_demo_project/Bit-Merge-Mobile-master/lib/packages/resources/src/theme.dart
+
+#**************************** changes color theme ***************************************
+
+DEMO_THEME_FILE="$current_directory/cubit_demo_project/Bit-Merge-Mobile-master/lib/packages/resources/src/theme.dart"
+PROJECT_THEME_FILE="$CUSTOM_PROJECT_DIR/$PROJECT_NAME/lib/packages/resources/src/theme.dart"
+
+cp "$DEMO_THEME_FILE" "$PROJECT_THEME_FILE"
+
+echo "Do you want to customize the theme colors? (yes/no):"
+read -r customize_colors
+
+if [ "$customize_colors" = "yes" ]; then
+  echo "Enter new primary color (e.g., blue, red, #RRGGBB):"
+  read -r new_primary_color
+
+  new_primary_color=${new_primary_color//#}
+
+  sed -i "" "s/primary: .*,/primary: Color(0xFF$new_primary_color),/g" "$PROJECT_THEME_FILE"
+fi
+
+sed -i "" "s/bit_merge_mobile/$PROJECT_NAME/g" "$PROJECT_THEME_FILE"
 
 # Move to the newly created project directory
 cd "$CUSTOM_PROJECT_DIR/$PROJECT_NAME" || exit
 
 flutter pub upgrade
-#
+
+#**************************** APP-RENAME ***************************************
 echo "Please enter your App name :"
 read -r DISPLAY_NAME
 
-#**************************** APP-RENAME ***************************************
 dart run "$current_directory"/rename_app/main.dart all="$DISPLAY_NAME"
 
 #**************************** Project add to GIT ***************************************
