@@ -112,10 +112,8 @@ dart run "$current_directory"/rename_app/main.dart all="$DISPLAY_NAME"
 
 #**************************** APP-ICON-GENERATED ***************************************
 
-# Call the function
-
 generate_icons() {
-  echo "******************* Note: At this stage, you have to add your app icon (1024 x 1024) path inside the required_files folder with filename app_icon; otherwise, it will take the default one *******************"
+  echo "******************* Note: At this stage, you have to add your app icon path inside the required_files folder with filename app_icon; otherwise, it will take the default one *******************"
   echo "Do you want to proceed? (y/n):"
   read -r user_input
 
@@ -125,15 +123,26 @@ generate_icons() {
     read -r user_input
   done
 
-  dart run "$current_directory"/app-icon-generator/lib/main.dart "$current_directory"
+  #Get required_files directory
+  directory="$current_directory"/required_files/
+  appIconFile="app_icon.png"
 
-  cp -r "$CUSTOM_PROJECT_DIR/$PROJECT_NAME"/android/app/src/main/res/ "$current_directory"/app-icon-generator/android/
-  # Remove the original Android resources
-  rm -r "$current_directory"/app-icon-generator/android/
-  cp -r "$CUSTOM_PROJECT_DIR/$PROJECT_NAME"/ios/Runner/ "$current_directory"/app-icon-generator/ios/
-  # Remove the original iOS resources
-  rm -r "$current_directory"/app-icon-generator/ios/
+  if [ -e "$directory/$appIconFile" ]; then
+    dart run "$current_directory"/app-icon-generator/lib/main.dart "$current_directory" "${current_directory}"
+    cp -r "$CUSTOM_PROJECT_DIR/$PROJECT_NAME"/android/app/src/main/res/ "$current_directory"/app-icon-generator/android/
+    # Remove the original Android resources
+    rm -r "$current_directory"/app-icon-generator/android/
+    cp -r "$CUSTOM_PROJECT_DIR/$PROJECT_NAME"/ios/Runner/ "$current_directory"/app-icon-generator/ios/
+    # Remove the original iOS resources
+    rm -r "$current_directory"/app-icon-generator/ios/
+  else
+    echo "******************** Error: $appIconFile not found in $directory ******************** "
+    echo "****** Please try again ******"
+    generate_icons
+  fi
+
 }
+# Call the function
 generate_icons
 
 echo "-------------------------------------------------"
