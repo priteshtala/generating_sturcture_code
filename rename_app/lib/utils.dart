@@ -21,7 +21,7 @@ class Utils {
     application.setAttribute('android:label', appName);
 
     await saveFile(filePath, document.toXmlString());
-    printFinishMessage('android');
+    _printFinishMessage('android');
   }
 
   static Future<void> renameIOS(String filePath, String appName) async {
@@ -46,7 +46,7 @@ class Utils {
       }
     }
     await saveFile(filePath, document.toXmlString(pretty: true));
-    printFinishMessage('ios');
+    _printFinishMessage('ios');
   }
 
   static Future<void> renameWeb(String filePath, String appName) async {
@@ -59,7 +59,7 @@ class Utils {
     var encoder = const JsonEncoder.withIndent("     ");
     String prettified = encoder.convert(document);
     await saveFile(filePath, prettified);
-    printFinishMessage('web');
+    _printFinishMessage('web');
   }
 
   static Future<void> renameWindows(String filePath, String appName) async {
@@ -69,10 +69,10 @@ class Utils {
       data = data.replaceAll(appNameLine, """set(BINARY_NAME "$appName")""");
     }
     await saveFile(filePath, data);
-    printFinishMessage('windows');
+    _printFinishMessage('windows');
   }
 
-  static void printFinishMessage(String platform) {
+  static void _printFinishMessage(String platform) {
     logMessage('✅ FINISHED RENAMING [${platform.toUpperCase()}] PROJECT\n');
   }
 

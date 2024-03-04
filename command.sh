@@ -104,7 +104,7 @@ read -r DISPLAY_NAME
 
 dart run "$current_directory"/rename_app/main.dart all="$DISPLAY_NAME"
 
-**************************** Project add to GIT ***************************************
+#**************************** Project add to GIT ***************************************
 
 echo "Please enter git repository:"
 read -r repository
