@@ -104,69 +104,69 @@ read -r DISPLAY_NAME
 
 dart run "$current_directory"/rename_app/main.dart all="$DISPLAY_NAME"
 
-#**************************** Project add to GIT ***************************************
-#
-#echo "Please enter git repository:"
-#read -r repository
-#
-#git init
-#git add .
-#echo "Please enter the commit message :"
-#read -r commit_message
-#git commit -m "$commit_message"
-#git remote add origin "$repository"
-#git push -u origin master
-#
-##**************************** key.properties-generated ***************************************
-#
-#echo "Please Enter store password (at least 6 characters):"
-#while true; do
-#  read -r storePassword
-#  if [ ${#storePassword} -ge 6 ]; then
-#    break
-#  else
-#    echo "Password must be at least 6 characters. Please try again."
-#  fi
-#done
-#
-#echo "Please Enter key password (at least 6 characters):"
-#while true; do
-#  read -r key_Password
-#  if [ ${#key_Password} -ge 6 ]; then
-#    break
-#  else
-#    echo "Password must be at least 6 characters. Please try again."
-#  fi
-#done
-#
-## Use expect to automate the keytool process
-#expect - <<EOF
-#spawn keytool -genkey -v -keystore android/app/upload-keystore.jks -keyalg RSA \
-#  -keysize 2048 -validity 10000 -alias upload -storepass "$storePassword" -keypass "$key_Password"
-#expect {
-#  "Is CN=*, OU=*, O=*, L=*, ST=*, C=* correct?" {
-#    # Prompt user for confirmation
-#    puts "Is the automatically generated information correct? (yes/no)"
-#    expect_user -timeout -1 -re "(.*)\n"
-#    set response \$expect_out(1,string)
-#    if {\$response == "yes"} {
-#      send "yes\r"
-#    } else {
-#      # User wants to manually input information
-#      exp_continue
-#    }
-#  }
-#  "Enter key password for <upload>" { send "$key_Password\r"; exp_continue }
-#  "Re-enter new password:" { send "$storePassword\r" }
-#}
-#EOF
-#
-## Update key.properties file with dynamic password
-#echo "storePassword=$storePassword" >> android/key.properties
-#echo "keyPassword=$key_Password" >> android/key.properties
-#echo "keyAlias=upload" >> android/key.properties
-#echo "storeFile=../app/upload-keystore.jks" >> android/key.properties
-##**************************** APP-ICON-GENERATED ***************************************
+**************************** Project add to GIT ***************************************
+
+echo "Please enter git repository:"
+read -r repository
+
+git init
+git add .
+echo "Please enter the commit message :"
+read -r commit_message
+git commit -m "$commit_message"
+git remote add origin "$repository"
+git push -u origin master
+
+#**************************** key.properties-generated ***************************************
+
+echo "Please Enter store password (at least 6 characters):"
+while true; do
+  read -r storePassword
+  if [ ${#storePassword} -ge 6 ]; then
+    break
+  else
+    echo "Password must be at least 6 characters. Please try again."
+  fi
+done
+
+echo "Please Enter key password (at least 6 characters):"
+while true; do
+  read -r key_Password
+  if [ ${#key_Password} -ge 6 ]; then
+    break
+  else
+    echo "Password must be at least 6 characters. Please try again."
+  fi
+done
+
+# Use expect to automate the keytool process
+expect - <<EOF
+spawn keytool -genkey -v -keystore android/app/upload-keystore.jks -keyalg RSA \
+  -keysize 2048 -validity 10000 -alias upload -storepass "$storePassword" -keypass "$key_Password"
+expect {
+  "Is CN=*, OU=*, O=*, L=*, ST=*, C=* correct?" {
+    # Prompt user for confirmation
+    puts "Is the automatically generated information correct? (yes/no)"
+    expect_user -timeout -1 -re "(.*)\n"
+    set response \$expect_out(1,string)
+    if {\$response == "yes"} {
+      send "yes\r"
+    } else {
+      # User wants to manually input information
+      exp_continue
+    }
+  }
+  "Enter key password for <upload>" { send "$key_Password\r"; exp_continue }
+  "Re-enter new password:" { send "$storePassword\r" }
+}
+EOF
+
+# Update key.properties file with dynamic password
+echo "storePassword=$storePassword" >> android/key.properties
+echo "keyPassword=$key_Password" >> android/key.properties
+echo "keyAlias=upload" >> android/key.properties
+echo "storeFile=../app/upload-keystore.jks" >> android/key.properties
+#**************************** APP-ICON-GENERATED ***************************************
 
 
 generate_icons() {
