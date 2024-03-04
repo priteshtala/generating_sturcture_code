@@ -52,7 +52,7 @@ fi
 #Structre Project Path
 ORG_DIR="$current_directory/cubit_demo_project/Bit-Merge-Mobile-master"
 
-#**************************** COMMAND TO CREATE-PROJECT ***************************************
+#***************************** COMMAND TO CREATE-PROJECT ****************************************
 
 flutter create --org $domain "$CUSTOM_PROJECT_DIR/$PROJECT_NAME"
 echo "-------------------------------------------------"
@@ -67,9 +67,12 @@ cp -r "$ORG_DIR/pubspec.yaml" "$CUSTOM_PROJECT_DIR/$PROJECT_NAME"
 
 #**************************** changes directory to project ***************************************
 
-find "$CUSTOM_PROJECT_DIR/$PROJECT_NAME/lib" -type f -exec sed -i "" "s/bit_merge_mobile/$PROJECT_NAME/g" {} +
-sed -i "" "s/bit_merge_mobile/$PROJECT_NAME/g" "$CUSTOM_PROJECT_DIR/$PROJECT_NAME/pubspec.yaml"
-sed -i "" "s/<desc>/A new flutter project./g" "$CUSTOM_PROJECT_DIR/$PROJECT_NAME/pubspec.yaml"
+find "$CUSTOM_PROJECT_DIR"/"$PROJECT_NAME"/lib -type f -exec sed -i "" -e "s/bit_merge_mobile/$PROJECT_NAME/g" {} +
+sed -i "" -e "s/bit_merge_mobile/$PROJECT_NAME/g" "$CUSTOM_PROJECT_DIR/$PROJECT_NAME/pubspec.yaml"
+sed -i "" -e "s/<desc>/A new flutter project./g" "$CUSTOM_PROJECT_DIR/$PROJECT_NAME/pubspec.yaml"
+
+#sed -i "" "s/bit_merge_mobile/$PROJECT_NAME/g" "$CUSTOM_PROJECT_DIR/$PROJECT_NAME/pubspec.yaml"
+#sed -i "" "s/<desc>/A new flutter project./g" "$CUSTOM_PROJECT_DIR/$PROJECT_NAME/pubspec.yaml"
 #/Volumes/Data/flutter/generating_sturcture_code/cubit_demo_project/Bit-Merge-Mobile-master/lib/packages/resources/src/theme.dart
 
 #**************************** changes color theme ***************************************
