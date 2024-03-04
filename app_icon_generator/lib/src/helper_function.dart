@@ -33,7 +33,7 @@ void resizeImage({required image.Image decodedImage, required String path}) asyn
       resizedIosImageList.add(file);
     }
 
-    final jsonFilePath = "$path/app-icon-generator/lib/src/Contents.json";
+    final jsonFilePath = "$path/app_icon_generator/lib/src/Contents.json";
     String jsonString = File(jsonFilePath).readAsStringSync();
     File("${iosDirectory.path}/Contents.json").writeAsString(jsonString);
 

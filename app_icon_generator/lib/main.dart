@@ -1,7 +1,6 @@
 library app_icon_generator;
 
 import 'dart:io';
-
 import 'src/helper_function.dart';
 
 void main(List<String> args) {
