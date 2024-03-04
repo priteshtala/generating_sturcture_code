@@ -91,10 +91,10 @@ if [ "$customize_colors" = "yes" ]; then
 
   new_primary_color=${new_primary_color//#}
 
-  sed -i "" "s/primary: .*,/primary: Color(0xFF$new_primary_color),/g" "$PROJECT_THEME_FILE"
+  sed -i "" -e "s/primary: .*,/primary: Color(0xFF$new_primary_color),/g" "$PROJECT_THEME_FILE"
 fi
 
-sed -i "" "s/bit_merge_mobile/$PROJECT_NAME/g" "$PROJECT_THEME_FILE"
+sed -i "" -e "s/bit_merge_mobile/$PROJECT_NAME/g" "$PROJECT_THEME_FILE"
 
 # Move to the newly created project directory
 cd "$CUSTOM_PROJECT_DIR/$PROJECT_NAME" || exit
