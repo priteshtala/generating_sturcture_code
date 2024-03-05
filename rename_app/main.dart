@@ -10,6 +10,7 @@ String? mac;
 String? windows;
 
 void main(List<String> arguments) async {
+
   if (arguments.isEmpty) {
     Utils.logMessage(help);
     return;
