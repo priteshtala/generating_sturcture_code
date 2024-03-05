@@ -25,7 +25,6 @@ done
 echo "please enter package name :"
 read -r domain
 
-
 # Get the current working directory
 current_directory=$(pwd)
 #echo "Current working directory: $current_directory"
@@ -43,8 +42,8 @@ if [ "$custom_path_choice" = "yes" ]; then
   read -r project_path
   CUSTOM_PROJECT_DIR="$project_path"
 else
-#  cd ..
-#  CUSTOM_PROJECT_DIR=$(pwd)/generated_project
+  #  cd ..
+  #  CUSTOM_PROJECT_DIR=$(pwd)/generated_project
   mkdir -p "$CUSTOM_PROJECT_DIR"
 fi
 
@@ -89,7 +88,7 @@ if [ "$customize_colors" = "yes" ]; then
   echo "Enter new primary color (e.g., blue, red, #RRGGBB):"
   read -r new_primary_color
 
-  new_primary_color=${new_primary_color//#}
+  new_primary_color=${new_primary_color//#/}
 
   sed -i "" -e "s/primary: .*,/primary: Color(0xFF$new_primary_color),/g" "$PROJECT_THEME_FILE"
 fi
@@ -107,104 +106,227 @@ read -r DISPLAY_NAME
 
 dart run "$current_directory"/rename_app/main.dart all="$DISPLAY_NAME"
 
-#**************************** Project add to GIT ***************************************
+##**************************** Project add to GIT ***************************************
+#
+#echo "Please enter git repository:"
+#read -r repository
+#
+#git init
+#git add .
+#echo "Please enter the commit message :"
+#read -r commit_message
+#git commit -m "$commit_message"
+#git remote add origin "$repository"
+#git push -u origin master
+#
+##**************************** key.properties-generated ***************************************
+#
+#echo "Please Enter store password (at least 6 characters):"
+#while true; do
+#  read -r storePassword
+#  if [ ${#storePassword} -ge 6 ]; then
+#    break
+#  else
+#    echo "Password must be at least 6 characters. Please try again."
+#  fi
+#done
+#
+#echo "Please Enter key password (at least 6 characters):"
+#while true; do
+#  read -r key_Password
+#  if [ ${#key_Password} -ge 6 ]; then
+#    break
+#  else
+#    echo "Password must be at least 6 characters. Please try again."
+#  fi
+#done
+#
+## Use expect to automate the keytool process
+#expect - <<EOF
+#spawn keytool -genkey -v -keystore android/app/upload-keystore.jks -keyalg RSA \
+#  -keysize 2048 -validity 10000 -alias upload -storepass "$storePassword" -keypass "$key_Password"
+#expect {
+#  "Is CN=*, OU=*, O=*, L=*, ST=*, C=* correct?" {
+#    # Prompt user for confirmation
+#    puts "Is the automatically generated information correct? (yes/no)"
+#    expect_user -timeout -1 -re "(.*)\n"
+#    set response \$expect_out(1,string)
+#    if {\$response == "yes"} {
+#      send "yes\r"
+#    } else {
+#      # User wants to manually input information
+#      exp_continue
+#    }
+#  }
+#  "Enter key password for <upload>" { send "$key_Password\r"; exp_continue }
+#  "Re-enter new password:" { send "$storePassword\r" }
+#}
+#EOF
+#
+## Update key.properties file with dynamic password
+#echo "storePassword=$storePassword" >> android/key.properties
+#echo "keyPassword=$key_Password" >> android/key.properties
+#echo "keyAlias=upload" >> android/key.properties
+#echo "storeFile=../app/upload-keystore.jks" >> android/key.properties
+##**************************** APP-ICON-GENERATED ***************************************
+#
+#
+#generate_icons() {
+#  echo "******************* Note: At this stage, you have to add your app icon path inside the required_files folder with filename app_icon; otherwise, it will take the default one *******************"
+#  echo "Do you want to proceed? (y):"
+#  read -r user_input
+#
+#  # Validate the user input
+#  while [[ ! "$user_input" =~ ^[yY]$ ]]; do
+#    echo "Invalid input. Please enter 'y' or 'Y'."
+#    read -r user_input
+#  done
+#
+#  #Get required_files directory
+#  directory="$current_directory"/required_files/
+#  appIconFile="app_icon.png"
+#
+#  if [ -e "$directory/$appIconFile" ]; then
+#    dart run "$current_directory"/app_icon_generator/lib/main.dart "$current_directory" "${current_directory}"
+#    cp -r "$CUSTOM_PROJECT_DIR/$PROJECT_NAME"/android/app/src/main/res/ "$current_directory"/app_icon_generator/android/
+#    # Remove the original Android resources
+#    rm -r "$current_directory"/app_icon_generator/android/
+#    cp -r "$CUSTOM_PROJECT_DIR/$PROJECT_NAME"/ios/Runner/ "$current_directory"/app_icon_generator/ios/
+#    # Remove the original iOS resources
+#    rm -r "$current_directory"/app_icon_generator/ios/
+#  else
+#    echo "******************** Error: $appIconFile not found in $directory ******************** "
+#    echo "****** Please try again ******"
+#    generate_icons
+#  fi
+#
+#}
+## Call the function
+#generate_icons
 
-echo "Please enter git repository:"
-read -r repository
+dart run "$current_directory"/theme-generator/main.dart "$current_directory"
+lightThemeJsonString=$(cat "${current_directory}"/theme-generator/light_theme.json)
+echo "$lightThemeJsonString"
 
-git init
-git add .
-echo "Please enter the commit message :"
-read -r commit_message
-git commit -m "$commit_message"
-git remote add origin "$repository"
-git push -u origin master
+darkThemeJsonString=$(cat "${current_directory}"/theme-generator/dark_theme.json)
+echo "$darkThemeJsonString"
 
-#**************************** key.properties-generated ***************************************
 
-echo "Please Enter store password (at least 6 characters):"
-while true; do
-  read -r storePassword
-  if [ ${#storePassword} -ge 6 ]; then
-    break
+extractJsonValue() {
+  local key="$1"
+   local jsonString="$2"
+    local pattern="\"$key\":[^,}]*"
+
+    if [[ $jsonString =~ $pattern ]]; then
+    local match="${BASH_REMATCH[0]}"
+    # Extract the value by removing the key and colon
+    local value="${match##*:}"
+    # Remove surrounding double quotes if present
+    value="${value//\"/}"
+    echo "$value"
   else
-    echo "Password must be at least 6 characters. Please try again."
+    echo "FFFFFF"
   fi
-done
-
-echo "Please Enter key password (at least 6 characters):"
-while true; do
-  read -r key_Password
-  if [ ${#key_Password} -ge 6 ]; then
-    break
-  else
-    echo "Password must be at least 6 characters. Please try again."
-  fi
-done
-
-# Use expect to automate the keytool process
-expect - <<EOF
-spawn keytool -genkey -v -keystore android/app/upload-keystore.jks -keyalg RSA \
-  -keysize 2048 -validity 10000 -alias upload -storepass "$storePassword" -keypass "$key_Password"
-expect {
-  "Is CN=*, OU=*, O=*, L=*, ST=*, C=* correct?" {
-    # Prompt user for confirmation
-    puts "Is the automatically generated information correct? (yes/no)"
-    expect_user -timeout -1 -re "(.*)\n"
-    set response \$expect_out(1,string)
-    if {\$response == "yes"} {
-      send "yes\r"
-    } else {
-      # User wants to manually input information
-      exp_continue
-    }
-  }
-  "Enter key password for <upload>" { send "$key_Password\r"; exp_continue }
-  "Re-enter new password:" { send "$storePassword\r" }
 }
-EOF
-
-# Update key.properties file with dynamic password
-echo "storePassword=$storePassword" >> android/key.properties
-echo "keyPassword=$key_Password" >> android/key.properties
-echo "keyAlias=upload" >> android/key.properties
-echo "storeFile=../app/upload-keystore.jks" >> android/key.properties
-#**************************** APP-ICON-GENERATED ***************************************
 
 
-generate_icons() {
-  echo "******************* Note: At this stage, you have to add your app icon path inside the required_files folder with filename app_icon; otherwise, it will take the default one *******************"
-  echo "Do you want to proceed? (y):"
-  read -r user_input
+# Flag to indicate whether to perform the replacement
+perform_replace=false
+inside_block=false
 
-  # Validate the user input
-  while [[ ! "$user_input" =~ ^[yY]$ ]]; do
-    echo "Invalid input. Please enter 'y' or 'Y'."
-    read -r user_input
-  done
-
-  #Get required_files directory
-  directory="$current_directory"/required_files/
-  appIconFile="app_icon.png"
-
-  if [ -e "$directory/$appIconFile" ]; then
-    dart run "$current_directory"/app_icon_generator/lib/main.dart "$current_directory" "${current_directory}"
-    cp -r "$CUSTOM_PROJECT_DIR/$PROJECT_NAME"/android/app/src/main/res/ "$current_directory"/app_icon_generator/android/
-    # Remove the original Android resources
-    rm -r "$current_directory"/app_icon_generator/android/
-    cp -r "$CUSTOM_PROJECT_DIR/$PROJECT_NAME"/ios/Runner/ "$current_directory"/app_icon_generator/ios/
-    # Remove the original iOS resources
-    rm -r "$current_directory"/app_icon_generator/ios/
-  else
-    echo "******************** Error: $appIconFile not found in $directory ******************** "
-    echo "****** Please try again ******"
-    generate_icons
+# Read the original file line by line and create a temporary file
+while IFS= read -r line; do
+  if [[ $line =~ class\ AppTheme\ \{ ]]; then
+    perform_replace=true
+      echo "AppTheme"
   fi
 
-}
-# Call the function
-generate_icons
+  if $perform_replace; then
+    if [[ $line =~ lightTheme\ \{ ]]; then
+      inside_block=true
+      echo "lightTheme"
+    fi
 
+    if $inside_block && [[ $line =~ \} ]]; then
+      inside_block=false
+      echo "inside_block"
+    fi
+
+    # Define the fields you want to replace
+    fields=("primary" "onPrimary" "secondary" "onSecondary" "background" "onBackground" "surface"
+      "onSurface" "surfaceVariant" "onSurfaceVariant" "error" "onError" "outline"
+      "outlineVariant" "shadow" "secondaryContainer" "primaryContainer" "onPrimaryContainer"
+      "inverseSurface" "tertiary" "tertiaryContainer" "surfaceTint")
+
+    # Iterate over the fields and perform replacement
+    for field in "${fields[@]}"; do
+      if $inside_block && [[ $line =~ $field:\ .* ]]; then
+        # Extract the color value from your JSON string (modify as needed)
+        color_value=$(extractJsonValue "$field" lightThemeJsonString)
+        echo $color_value
+
+        # Replace the line with the new color value
+        line="$field: Color(0xFF$color_value),"
+      fi
+    done
+  fi
+
+  echo "$line"
+done <"$PROJECT_THEME_FILE" >"$PROJECT_THEME_FILE.tmp"
+
+if [ -z "$darkThemeJsonString" ]; then
+    echo "darkThemeJsonString is empty"
+else
+    echo "darkThemeJsonString is not empty"
+    # Flag to indicate whether to perform the replacement
+      perform_replace=false
+      inside_block=false
+
+      # Read the original file line by line and create a temporary file
+      while IFS= read -r line; do
+        if [[ $line =~ class\ AppTheme\ \{ ]]; then
+          perform_replace=true
+        fi
+
+        if $perform_replace; then
+          if [[ $line =~ darkTheme\ \{ ]]; then
+            inside_block=true
+          fi
+
+          if $inside_block && [[ $line =~ \} ]]; then
+            inside_block=false
+          fi
+
+          # Define the fields you want to replace
+          fields=("primary" "onPrimary" "secondary" "onSecondary" "background" "onBackground" "surface"
+            "onSurface" "surfaceVariant" "onSurfaceVariant" "error" "onError" "outline"
+            "outlineVariant" "shadow" "secondaryContainer" "primaryContainer" "onPrimaryContainer"
+            "inverseSurface" "tertiary" "tertiaryContainer" "surfaceTint")
+
+          # Iterate over the fields and perform replacement
+          for field in "${fields[@]}"; do
+            if $inside_block && [[ $line =~ $field:\ .* ]]; then
+              # Extract the color value from your JSON string (modify as needed)
+              color_value=$(extractJsonValue "$field" darkThemeJsonString)
+
+              # Replace the line with the new color value
+              line="$field: Color(0xFF$color_value),"
+            fi
+          done
+        fi
+
+        echo "$line"
+      done <"$PROJECT_THEME_FILE" >"$PROJECT_THEME_FILE.tmp"
+#      rm "${current_directory}"/theme-generator/dark_theme.json
+
+fi
+
+
+
+# Replace the original file with the modified temporary file
+mv "$PROJECT_THEME_FILE.tmp" "$PROJECT_THEME_FILE"
+
+#rm "${current_directory}"/theme-generator/light_theme.json
 echo "-------------------------------------------------"
 echo "ALL DONE!!!"
 echo "-------------------------------------------------"
