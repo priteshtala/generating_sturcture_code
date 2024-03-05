@@ -273,6 +273,10 @@ done <"$PROJECT_THEME_FILE" >"$PROJECT_THEME_FILE.tmp"
 # Replace the original file with the modified temporary file for light theme
 mv "$PROJECT_THEME_FILE.tmp" "$PROJECT_THEME_FILE"
 
+#if [ -z "$darkThemeJsonString" ]; then
+#    sed -i '/^ *static ThemeData get darkTheme {/,/^ *}/d' "$PROJECT_THEME_FILE"
+#fi
+
 # If dark theme data is provided, update dark theme
 if [ -n "$darkThemeJsonString" ]; then
   # Flag to indicate whether to perform the replacement for dark theme
@@ -317,6 +321,8 @@ if [ -n "$darkThemeJsonString" ]; then
 
   # Replace the original file with the modified temporary file for dark theme
   mv "$PROJECT_THEME_FILE.tmp" "$PROJECT_THEME_FILE"
+  rm "${current_directory}"/theme-generator/dark_theme.json
+
 fi
 
 
@@ -324,7 +330,7 @@ fi
 # Replace the original file with the modified temporary file
 mv "$PROJECT_THEME_FILE.tmp" "$PROJECT_THEME_FILE"
 
-#rm "${current_directory}"/theme-generator/light_theme.json
+rm "${current_directory}"/theme-generator/light_theme.json
 echo "-------------------------------------------------"
 echo "ALL DONE!!!"
 echo "-------------------------------------------------"

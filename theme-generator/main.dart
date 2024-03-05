@@ -18,22 +18,39 @@ Map<String, dynamic> _darkColorScheme = {};
 
 void main(List<String> args) {
   final currentDirectoryPath = args[0];
-  _getColorScheme(_lightColorScheme, "Light");
-  print("Set colorScheme dark theme (y/n) : ");
-  final response = stdin.readLineSync();
-  if (response != null && response.toLowerCase() == 'y') {
-    _getColorScheme(_darkColorScheme, "Dark");
-  }
-  _createJsonFile(
-    "$currentDirectoryPath/theme-generator/light_theme.json",
-    jsonEncode(_lightColorScheme),
-  );
-  if (_darkColorScheme.isNotEmpty) {
+
+  print("Do you want single theme ? (y/n)");
+  final isSingleResponse = stdin.readLineSync();
+
+  if (isSingleResponse != null && isSingleResponse.toLowerCase() == 'y') {
+    _getColorScheme(_lightColorScheme, "Default");
     _createJsonFile(
-      "$currentDirectoryPath/theme-generator/dark_theme.json",
-      jsonEncode(_darkColorScheme),
+      "$currentDirectoryPath/theme-generator/light_theme.json",
+      jsonEncode(_lightColorScheme),
     );
+    return;
+  }else{
+    _getColorScheme(_lightColorScheme, "Light");
+
+    // print("Set colorScheme dark theme (y/n) : ");
+    // final response = stdin.readLineSync();
+
+
+
+      _getColorScheme(_darkColorScheme, "Dark");
+
+    _createJsonFile(
+      "$currentDirectoryPath/theme-generator/light_theme.json",
+      jsonEncode(_lightColorScheme),
+    );
+    if (_darkColorScheme.isNotEmpty) {
+      _createJsonFile(
+        "$currentDirectoryPath/theme-generator/dark_theme.json",
+        jsonEncode(_darkColorScheme),
+      );
+    }
   }
+
 }
 
 Future<void> _createJsonFile(String path, String theme) async {
