@@ -16,8 +16,8 @@ final _colorNameList = [
 Map<String, dynamic> _lightColorScheme = {};
 Map<String, dynamic> _darkColorScheme = {};
 
-void main(List<String> args) {
-  final currentDirectoryPath = args[0];
+void main() {
+  final currentDirectoryPath = "";
 
   print("Do you want single theme ? (y/n)");
   final isSingleResponse = stdin.readLineSync();
@@ -29,15 +29,13 @@ void main(List<String> args) {
       jsonEncode(_lightColorScheme),
     );
     return;
-  }else{
+  } else {
     _getColorScheme(_lightColorScheme, "Light");
 
     // print("Set colorScheme dark theme (y/n) : ");
     // final response = stdin.readLineSync();
 
-
-
-      _getColorScheme(_darkColorScheme, "Dark");
+    _getColorScheme(_darkColorScheme, "Dark");
 
     _createJsonFile(
       "$currentDirectoryPath/theme-generator/light_theme.json",
@@ -50,7 +48,6 @@ void main(List<String> args) {
       );
     }
   }
-
 }
 
 Future<void> _createJsonFile(String path, String theme) async {
@@ -68,11 +65,12 @@ void _getColorScheme(Map<String, dynamic> colorScheme, String theme) {
       isValidInput = _isValidColorCode(colorCode);
       if (!isValidInput) print("Invalid color code. Please enter a valid hexadecimal color code.");
     }
-    colorScheme[colorName] = colorCode;
+    colorScheme[colorName] = colorCode.substring(1, colorCode.length);
+
   }
 }
 
 bool _isValidColorCode(String colorCode) {
-  RegExp colorValueRegex = RegExp(r'^(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$');
+  RegExp colorValueRegex = RegExp(r'^#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$');
   return colorValueRegex.hasMatch(colorCode);
 }
