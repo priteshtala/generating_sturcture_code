@@ -231,41 +231,37 @@ extractJsonValue() {
 
 
 # Flag to indicate whether to perform the replacement
-perform_replace=false
-inside_block=false
+perform_replace_light=false
+inside_block_light=false
 
-# Read the original file line by line and create a temporary file
+# Read the original file line by line and create a temporary file for light theme
 while IFS= read -r line; do
   if [[ $line =~ class\ AppTheme\ \{ ]]; then
-    perform_replace=true
-      echo "AppTheme"
+    perform_replace_light=true
   fi
 
-  if $perform_replace; then
+  if $perform_replace_light; then
     if [[ $line =~ lightTheme\ \{ ]]; then
-      inside_block=true
-      echo "lightTheme"
+      inside_block_light=true
     fi
 
-    if $inside_block && [[ $line =~ \} ]]; then
-      inside_block=false
-      echo "inside_block"
+    if $inside_block_light && [[ $line =~ \} ]]; then
+      inside_block_light=false
     fi
 
-    # Define the fields you want to replace
+    # Define the fields you want to replace for light theme
     fields=("primary" "onPrimary" "secondary" "onSecondary" "background" "onBackground" "surface"
       "onSurface" "surfaceVariant" "onSurfaceVariant" "error" "onError" "outline"
       "outlineVariant" "shadow" "secondaryContainer" "primaryContainer" "onPrimaryContainer"
       "inverseSurface" "tertiary" "tertiaryContainer" "surfaceTint")
 
-    # Iterate over the fields and perform replacement
+    # Iterate over the fields and perform replacement for light theme
     for field in "${fields[@]}"; do
-      if $inside_block && [[ $line =~ $field:\ .* ]]; then
-        # Extract the color value from your JSON string (modify as needed)
-        color_value=$(extractJsonValue "$field" lightThemeJsonString)
-        echo $color_value
+      if $inside_block_light && [[ $line =~ $field:\ .* ]]; then
+        # Extract the color value from your JSON string for light theme (modify as needed)
+        color_value=$(extractJsonValue "$field" "$lightThemeJsonString")
 
-        # Replace the line with the new color value
+        # Replace the line with the new color value for light theme
         line="$field: Color(0xFF$color_value),"
       fi
     done
@@ -274,51 +270,53 @@ while IFS= read -r line; do
   echo "$line"
 done <"$PROJECT_THEME_FILE" >"$PROJECT_THEME_FILE.tmp"
 
-if [ -z "$darkThemeJsonString" ]; then
-    echo "darkThemeJsonString is empty"
-else
-    echo "darkThemeJsonString is not empty"
-    # Flag to indicate whether to perform the replacement
-      perform_replace=false
-      inside_block=false
+# Replace the original file with the modified temporary file for light theme
+mv "$PROJECT_THEME_FILE.tmp" "$PROJECT_THEME_FILE"
 
-      # Read the original file line by line and create a temporary file
-      while IFS= read -r line; do
-        if [[ $line =~ class\ AppTheme\ \{ ]]; then
-          perform_replace=true
+# If dark theme data is provided, update dark theme
+if [ -n "$darkThemeJsonString" ]; then
+  # Flag to indicate whether to perform the replacement for dark theme
+  perform_replace_dark=false
+  inside_block_dark=false
+
+  # Read the original file line by line and create a temporary file for dark theme
+  while IFS= read -r line; do
+    if [[ $line =~ class\ AppTheme\ \{ ]]; then
+      perform_replace_dark=true
+    fi
+
+    if $perform_replace_dark; then
+      if [[ $line =~ darkTheme\ \{ ]]; then
+        inside_block_dark=true
+      fi
+
+      if $inside_block_dark && [[ $line =~ \} ]]; then
+        inside_block_dark=false
+      fi
+
+      # Define the fields you want to replace for dark theme
+      fields=("primary" "onPrimary" "secondary" "onSecondary" "background" "onBackground" "surface"
+        "onSurface" "surfaceVariant" "onSurfaceVariant" "error" "onError" "outline"
+        "outlineVariant" "shadow" "secondaryContainer" "primaryContainer" "onPrimaryContainer"
+        "inverseSurface" "tertiary" "tertiaryContainer" "surfaceTint")
+
+      # Iterate over the fields and perform replacement for dark theme
+      for field in "${fields[@]}"; do
+        if $inside_block_dark && [[ $line =~ $field:\ .* ]]; then
+          # Extract the color value from your JSON string for dark theme (modify as needed)
+          color_value=$(extractJsonValue "$field" "$darkThemeJsonString")
+
+          # Replace the line with the new color value for dark theme
+          line="$field: Color(0xFF$color_value),"
         fi
+      done
+    fi
 
-        if $perform_replace; then
-          if [[ $line =~ darkTheme\ \{ ]]; then
-            inside_block=true
-          fi
+    echo "$line"
+  done <"$PROJECT_THEME_FILE" >"$PROJECT_THEME_FILE.tmp"
 
-          if $inside_block && [[ $line =~ \} ]]; then
-            inside_block=false
-          fi
-
-          # Define the fields you want to replace
-          fields=("primary" "onPrimary" "secondary" "onSecondary" "background" "onBackground" "surface"
-            "onSurface" "surfaceVariant" "onSurfaceVariant" "error" "onError" "outline"
-            "outlineVariant" "shadow" "secondaryContainer" "primaryContainer" "onPrimaryContainer"
-            "inverseSurface" "tertiary" "tertiaryContainer" "surfaceTint")
-
-          # Iterate over the fields and perform replacement
-          for field in "${fields[@]}"; do
-            if $inside_block && [[ $line =~ $field:\ .* ]]; then
-              # Extract the color value from your JSON string (modify as needed)
-              color_value=$(extractJsonValue "$field" darkThemeJsonString)
-
-              # Replace the line with the new color value
-              line="$field: Color(0xFF$color_value),"
-            fi
-          done
-        fi
-
-        echo "$line"
-      done <"$PROJECT_THEME_FILE" >"$PROJECT_THEME_FILE.tmp"
-#      rm "${current_directory}"/theme-generator/dark_theme.json
-
+  # Replace the original file with the modified temporary file for dark theme
+  mv "$PROJECT_THEME_FILE.tmp" "$PROJECT_THEME_FILE"
 fi
 
 
