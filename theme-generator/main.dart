@@ -16,8 +16,8 @@ final _colorNameList = [
 Map<String, dynamic> _lightColorScheme = {};
 Map<String, dynamic> _darkColorScheme = {};
 
-void main() {
-  final currentDirectoryPath = "";
+void main(List<String> args) {
+  final currentDirectoryPath = args[0];
 
   print("Do you want single theme ? (y/n)");
   final isSingleResponse = stdin.readLineSync();
@@ -66,7 +66,6 @@ void _getColorScheme(Map<String, dynamic> colorScheme, String theme) {
       if (!isValidInput) print("Invalid color code. Please enter a valid hexadecimal color code.");
     }
     colorScheme[colorName] = colorCode.substring(1, colorCode.length);
-
   }
 }
 
