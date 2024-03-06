@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:bit_merge_mobile/packages/utils/firebase_helper.dart';
 import 'package:bit_merge_mobile/src/l10n/generated/l10n.dart';
 import 'package:bit_merge_mobile/theme/theme_bloc.dart';
 import 'package:flutter/material.dart';
@@ -19,6 +20,8 @@ Future<void> bootstrap(
 
     DependencyHelper dependencyHelper = DependencyHelper.getInstance();
     await dependencyHelper.initialize();
+    final firebaseHelper = FirebaseHelper();
+    await firebaseHelper.initializeApp();
 
     // Set system ui appearance & behaviours for app
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
