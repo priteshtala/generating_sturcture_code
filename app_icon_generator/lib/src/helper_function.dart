@@ -13,9 +13,14 @@ image.Image? getImageDimension({required String imagePath}) {
   return null;
 }
 
-void resizeImage({required image.Image decodedImage, required String path}) async {
+void resizeImage({
+  required image.Image decodedImage,
+  required String path,
+}) async {
   final resizedAndroidImageList = <File>[];
   final resizedIosImageList = <File>[];
+  final resizedNotificationImageList = <File>[];
+
   try {
     for (int i = 0; i < androidTemplateList.length; i++) {
       final androidDirectory = await Directory("$androidFolderPath/${androidTemplateList[i].directoryName}").create(recursive: true);

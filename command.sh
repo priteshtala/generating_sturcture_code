@@ -283,7 +283,7 @@ dart run "$current_directory"/rename_app/main.dart all="$DISPLAY_NAME"
 #echo "keyPassword=$key_Password" >> android/key.properties
 #echo "keyAlias=upload" >> android/key.properties
 #echo "storeFile=../app/upload-keystore.jks" >> android/key.properties
-  ##**************************** APP-ICON-GENERATED ***************************************
+##**************************** APP-ICON-GENERATED ***************************************
 #
 
 generate_icons() {
@@ -297,12 +297,28 @@ generate_icons() {
     read -r user_input
   done
 
+  echo "Add notification icon in required_files folder with notification_icon.png file name"
+
+  read -r -p "Do you want to proceed? (y/n): " user_confirmation
+
   #Get required_files directory
   directory="$current_directory"/required_files/
   appIconFile="app_icon.png"
+  notificationIconFile="notification_icon.png"
+
+  flag=false
+  if [ "$user_confirmation" = "y" ]; then
+    # Check if the file exists
+    if [ -e "$directory/$notificationIconFile" ]; then
+      flag=true
+    else
+      echo "Notification icon does not exist in $directory."
+    fi
+
+  fi
 
   if [ -e "$directory/$appIconFile" ]; then
-    dart run "$current_directory"/app_icon_generator/lib/main.dart "$current_directory" "${current_directory}"
+    dart run "$current_directory"/app_icon_generator/lib/main.dart "$current_directory" "${current_directory} ${flag}"
     cp -r "$CUSTOM_PROJECT_DIR/$PROJECT_NAME"/android/app/src/main/res/ "$current_directory"/app_icon_generator/android/
     # Remove the original Android resources
     rm -r "$current_directory"/app_icon_generator/android/
@@ -323,8 +339,8 @@ echo "Do you want to connect Firebase (y/n):"
 read -r create
 
 if [ "$create" = "y" ]; then
-dart pub global activate flutterfire_cli
-flutterfire configure
+  dart pub global activate flutterfire_cli
+  flutterfire configure
 fi
 echo "-------------------------------------------------"
 echo "ALL DONE!!!"

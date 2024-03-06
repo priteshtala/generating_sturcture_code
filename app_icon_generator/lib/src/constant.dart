@@ -1,5 +1,6 @@
 import 'model/android.dart';
 import 'model/ios.dart';
+import 'model/notification.dart';
 
 const androidFolderPath = "android/app/src/main/res";
 const iosFolderPath = "ios/Runner/Assets.xcassets/AppIcon.appiconset";
@@ -28,4 +29,10 @@ final List<IosIconTemplate> iosTemplateList = [
   const IosIconTemplate(fileName: "Icon-App-76x76@2x.png", size: 152),
   const IosIconTemplate(fileName: "Icon-App-83.5x83.5@2x.png", size: 167),
   const IosIconTemplate(fileName: "Icon-App-1024x1024@1x.png", size: 1024),
+];
+final List<NotificationIconTemplate> notificationTemplateList = [
+  const NotificationIconTemplate(directoryName: "drawable-hdpi", size: 36),
+  const NotificationIconTemplate(directoryName: "drawable-mdpi", size: 24),
+  const NotificationIconTemplate(directoryName: "drawable-xhdpi", size: 48),
+  const NotificationIconTemplate(directoryName: "drawable-xxhdpi", size: 72),
 ];
