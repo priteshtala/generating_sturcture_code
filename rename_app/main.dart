@@ -48,28 +48,28 @@ void parseArguments(List<String> args) {
       windows = splitted.last;
       return;
     }
-    // if (splitted.first == "android") {
-    //   android = splitted.last;
-    // }
-    // if (splitted.first == "ios") {
-    //   ios = splitted.last;
-    // }
-    // if (splitted.first == "web") {
-    //   web = splitted.last;
-    // }
-    // if (splitted.first == "mac") {
-    //   mac = splitted.last;
-    // }
-    // if (splitted.first == "windows") {
-    //   windows = splitted.last;
-    // }
-    // if (splitted.first == "others") {
-    //   android = android ?? splitted.last;
-    //   ios = ios ?? splitted.last;
-    //   web = web ?? splitted.last;
-    //   mac = mac ?? splitted.last;
-    //   windows = windows ?? splitted.last;
-    // }
+    if (splitted.first == "android") {
+      android = splitted.last;
+    }
+    if (splitted.first == "ios") {
+      ios = splitted.last;
+    }
+    if (splitted.first == "web") {
+      web = splitted.last;
+    }
+    if (splitted.first == "mac") {
+      mac = splitted.last;
+    }
+    if (splitted.first == "windows") {
+      windows = splitted.last;
+    }
+    if (splitted.first == "others") {
+      android = android ?? splitted.last;
+      ios = ios ?? splitted.last;
+      web = web ?? splitted.last;
+      mac = mac ?? splitted.last;
+      windows = windows ?? splitted.last;
+    }
   }
 }
 
