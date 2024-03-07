@@ -312,13 +312,15 @@ generate_icons() {
     if [ -e "$directory/$notificationIconFile" ]; then
       flag=true
     else
+      flag=false
       echo "Notification icon does not exist in $directory."
     fi
 
   fi
+  echo "=================kkk $flag"
 
   if [ -e "$directory/$appIconFile" ]; then
-    dart run "$current_directory"/app_icon_generator/lib/main.dart "$current_directory" "${current_directory} ${flag}"
+    dart run "$current_directory"/app_icon_generator/lib/main.dart "$current_directory" ${flag}
     cp -r "$CUSTOM_PROJECT_DIR/$PROJECT_NAME"/android/app/src/main/res/ "$current_directory"/app_icon_generator/android/
     # Remove the original Android resources
     rm -r "$current_directory"/app_icon_generator/android/
