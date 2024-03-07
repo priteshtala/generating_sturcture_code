@@ -282,7 +282,7 @@ echo "storeFile=../app/upload-keystore.jks" >> android/key.properties
 #**************************** APP-ICON-GENERATED ***************************************
 
 generate_icons() {
-  echo "******************* Note: At this stage, you have to add your app icon path inside the required_files folder with filename app_icon; otherwise, it will take the default one *******************"
+  echo "Note: At this stage, you have to add your app icon path inside the required_files folder with filename app_icon; otherwise, it will take the default one."
   echo "Do you want to proceed? (y):"
   read -r user_input
 
